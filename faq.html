@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>FAQ Contábil Dinâmico</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: auto; }
+    .estado-lista button { margin: 5px; }
+    .faq-section { margin-top: 20px; }
+    .faq-item { margin-bottom: 15px; }
+    .faq-item h3 { cursor: pointer; color: #007bff; }
+    .faq-item p { display: none; padding-left: 15px; }
+  </style>
+</head>
+<body>
+
+  <h1>FAQ Contábil por Estado e Município</h1>
+  
+  <div class="estado-lista">
+    <button onclick="mostrarMunicipios('sp')">São Paulo</button>
+    <button onclick="mostrarMunicipios('rj')">Rio de Janeiro</button>
+  </div>
+
+  <div id="municipios-container"></div>
+  <div id="faq-container"></div>
+
+  <script>
+    const municipios = {
+      sp: ['São Paulo', 'Campinas'],
+      rj: ['Rio de Janeiro', 'Niterói']
+    };
+
+    const faqs = {
+      'São Paulo': [
+        { titulo: 'Notas Fiscais', conteudo: 'Para emitir NFS-e em SP, acesse https://nfe.prefeitura.sp.gov.br...' },
+        { titulo: 'Tributos', conteudo: 'ISS segunda via pelo site da Prefeitura de SP...' },
+      ],
+      Campinas: [
+        { titulo: 'Notas Fiscais', conteudo: 'Em Campinas, notas fiscais são emitidas via sistema X...' },
+      ],
+      'Rio de Janeiro': [
+        { titulo: 'Notas Fiscais', conteudo: 'Para emitir no RJ, acesse o portal Y...' },
+      ],
+      Niterói: [
+        { titulo: 'Tributos', conteudo: 'Tributos municipais em Niterói são pagos pelo portal Z...' },
+      ]
+    };
+
+    function mostrarMunicipios(estado) {
+      const container = document.getElementById('municipios-container');
+      container.innerHTML = `<h2>Municípios em ${estado.toUpperCase()}</h2>`;
+      municipios[estado].forEach(mun => {
+        const btn = document.createElement('button');
+        btn.textContent = mun;
+        btn.onclick = () => mostrarFaq(mun);
+        container.appendChild(btn);
+      });
+      document.getElementById('faq-container').innerHTML = '';
+    }
+
+    function mostrarFaq(municipio) {
+      const container = document.getElementById('faq-container');
+      container.innerHTML = `<h2>FAQ - ${municipio}</h2>`;
+      faqs[municipio].forEach(faq => {
+        const div = document.createElement('div');
+        div.className = 'faq-item';
+        div.innerHTML = `<h3>${faq.titulo}</h3><p>${faq.conteudo}</p>`;
+        div.querySelector('h3').onclick = () => {
+          const p = div.querySelector('p');
+          p.style.display = p.style.display === 'block' ? 'none' : 'block';
+        };
+        container.appendChild(div);
+      });
+    }
+  </script>
+
+</body>
+</html>
